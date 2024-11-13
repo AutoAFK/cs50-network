@@ -1,5 +1,15 @@
-{% extends "network/layout.html" %}
+{% extends 'network/layout.html' %}
 
 {% block body %}
-    TODO
+  <h1>All Posts</h1>
+  {% if user.is_authenticated %}
+    {% comment %}TODO: Add a form action{% endcomment %}
+    <form action="" method="post">
+      <div class="border border-gray p-4">
+        <label for="post_body" class="form-label fs-3 fw-bold">New Post</label>
+        <textarea name="post_body" id="post_body" class="form-control mb-1"></textarea>
+        <input type="submit" value="Post" class="btn btn-primary" />
+      </div>
+    </form>
+  {% endif %}
 {% endblock %}
