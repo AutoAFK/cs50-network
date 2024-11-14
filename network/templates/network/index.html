@@ -13,14 +13,19 @@
       </div>
     </form>
   {% endif %}
-  <div class="border border-gray p-4 my-2">
-    <h3>Post User</h3>
-    <a href="#">Edit</a>
-    <p>post body</p>
-    <p>post timestamp</p>
-    <p>
-      <i class="fa-regular fa-heart pe-auto"></i>number
-    </p>
-    <a href="#">comment</a>
-  </div>
+  {% for post in posts %}
+    <div class="border border-gray p-4 my-2">
+      <h3>{{ post.user }}</h3>
+      {% if user == post.user %}
+        <a href="#">Edit</a>
+      {% endif %}
+      <p class="my-0">{{ post.body }}</p>
+      <p class="my-0 text-secondary">{{ post.timestamp }}</p>
+      <p>
+        <i class="fa-regular fa-heart pe-auto mr-2"></i>
+        {{ post.get_likes_amount }}
+      </p>
+      <a href="#">comment</a>
+    </div>
+  {% endfor %}
 {% endblock %}

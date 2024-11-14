@@ -3,13 +3,26 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 from .models import User, Post
 from .forms import PostForm
 
 
 def index(request):
-    return render(request, "network/index.html", {"form": PostForm()})
+    form = PostForm()
+    posts = Post.objects.all().order_by("-timestamp")
+    paginator = Paginator(posts, 5)
+    page_number = request.GET.get("page")
+
+    try:
+        posts = paginator.page(page_number)
+    except PageNotAnInteger:
+        posts = paginator.page(1)
+    except EmptyPage:
+        posts = paginator.page(paginator.num_pages)
+
+    return render(request, "network/index.html", {"form": form, "posts": posts})
 
 
 def new_post(request):
