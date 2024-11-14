@@ -1,20 +1,21 @@
 import json
+
 from django.contrib.auth import authenticate, login, logout
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db import IntegrityError
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from django.shortcuts import render, redirect
+from django.http import HttpResponseRedirect, JsonResponse
+from django.shortcuts import redirect, render
 from django.urls import reverse
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.contrib.auth.decorators import login_required
-from .models import User, Post
+
 from .forms import PostForm
+from .models import Post, User
 
 
 def index(request):
     form = PostForm()
     posts = Post.objects.all().order_by("-timestamp")
     paginator = Paginator(posts, 5)
-    page_number = request.GET.get("page")
+    page_number = request.GET.get("page", 1)
 
     try:
         posts = paginator.page(page_number)
@@ -34,9 +35,11 @@ def new_post(request):
             post_body = form.cleaned_data["post_body"]
             post = Post(user=user, body=post_body)
             post.save()
-            return JsonResponse({"message": "Post created successfully"}, status=201)
+            return JsonResponse(
+                {"success": True, "redirect_url": reverse("network:index")}
+            )
         return JsonResponse(
-            {"message": "Text need to be above 30 characters"}, status=400
+            {"error": "Input is not valid, must contain 30 letters minimum."}
         )
     else:
         return redirect("network:index")
@@ -60,7 +63,6 @@ def like_post(request):
 
 def login_view(request):
     if request.method == "POST":
-
         # Attempt to sign user in
         username = request.POST["username"]
         password = request.POST["password"]

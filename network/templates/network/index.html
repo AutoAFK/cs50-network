@@ -21,7 +21,7 @@
       {% endif %}
       <p class="my-0">{{ post.body }}</p>
       <p class="my-0 text-secondary">{{ post.timestamp }}</p>
-      <a id="like_button" data-post-id="{{ post.id }}">
+      <a id="like_button" data-post-id="{{ post.id }}" style="cursor:pointer;">
         {% if user in post.likes.all %}
           <i class="fa-solid fa-heart pe-auto mr-2 text-danger"></i>
         {% else %}
@@ -32,4 +32,14 @@
       <a href="#">comment</a>
     </div>
   {% endfor %}
+
+  <div class="d-flex justify-content-center fs-4">
+    {% if posts.has_previous %}
+      <a href="?page={{ posts.previous_page_number }}">{{ posts.previous_page_number }}</a>
+    {% endif %}
+    <span class="mx-2">{{ posts.number }}</span>
+    {% if posts.has_next %}
+      <a href="?page={{ posts.next_page_number }}">{{ posts.next_page_number }}</a>
+    {% endif %}
+  </div>
 {% endblock %}

@@ -12,12 +12,15 @@ document.addEventListener("DOMContentLoaded", () => {
 			},
 		})
 			.then((response) => {
-				if (response.status !== 201) {
-					response.json().then((data) => {
-						document.getElementById("post_errors").innerText = message.message;
-					});
+				if (response.ok) {
+					return response.json();
+				}
+			})
+			.then((data) => {
+				if (data.success) {
+					window.location.href = data.redirect_url;
 				} else {
-					document.getElementById("post_body").value = "";
+					document.getElementById("post_errors").innerText = data.error;
 				}
 			})
 			.catch((error) => {
