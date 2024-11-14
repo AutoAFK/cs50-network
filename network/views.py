@@ -1,14 +1,31 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.shortcuts import render, redirect
 from django.urls import reverse
 
-from .models import User
+from .models import User, Post
+from .forms import PostForm
 
 
 def index(request):
-    return render(request, "network/index.html")
+    return render(request, "network/index.html", {"form": PostForm()})
+
+
+def new_post(request):
+    if request.method == "POST":
+        form = PostForm(request.POST)
+        if form.is_valid():
+            user = request.user
+            post_body = form.cleaned_data["post_body"]
+            post = Post(user=user, body=post_body)
+            post.save()
+            return JsonResponse({"message": "Post created successfully"}, status=201)
+        return JsonResponse(
+            {"message": "Text need to be above 30 characters"}, status=400
+        )
+    else:
+        return redirect("network:index")
 
 
 def login_view(request):

@@ -3,12 +3,13 @@
 {% block body %}
   <h1>All Posts</h1>
   {% if user.is_authenticated %}
-    {% comment %}TODO: Add a form action{% endcomment %}
-    <form action="" method="post">
+    <form action="{% url 'network:posts/new' %}" method="post" id="postForm">
+      {% csrf_token %}
       <div class="border border-gray p-4">
         <label for="post_body" class="form-label fs-3 fw-bold">New Post</label>
-        <textarea name="post_body" id="post_body" class="form-control mb-1"></textarea>
+        {{ form.post_body }}
         <input type="submit" value="Post" class="btn btn-primary" />
+        <p class="text-danger" id="post_errors"></p>
       </div>
     </form>
   {% endif %}
