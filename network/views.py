@@ -61,6 +61,27 @@ def like_post(request):
         return JsonResponse(json_response)
 
 
+def user_page(request, id):
+    user = User.objects.get(id=id)
+    return render(request, "network/user/user_page.html", {user: user})
+
+
+def user_followers(request, id):
+    user = User.objects.get(id=id)
+    followers = user.followers.all()
+    return render(
+        request, "network/user/user_followers.html", {user: user, followers: followers}
+    )
+
+
+def user_following(request, id):
+    user = User.objects.get(id=id)
+    following = user.following.all()
+    return render(
+        request, "network/user/user_following.html", {user: user, following: following}
+    )
+
+
 def login_view(request):
     if request.method == "POST":
         # Attempt to sign user in
