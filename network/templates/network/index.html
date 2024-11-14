@@ -21,10 +21,14 @@
       {% endif %}
       <p class="my-0">{{ post.body }}</p>
       <p class="my-0 text-secondary">{{ post.timestamp }}</p>
-      <p>
-        <i class="fa-regular fa-heart pe-auto mr-2"></i>
-        {{ post.get_likes_amount }}
-      </p>
+      <a id="like_button" data-post-id="{{ post.id }}">
+        {% if user in post.likes.all %}
+          <i class="fa-solid fa-heart pe-auto mr-2 text-danger"></i>
+        {% else %}
+          <i class="fa-solid fa-heart pe-auto mr-2"></i>
+        {% endif %}
+        <span>{{ post.get_likes_amount }}</span>
+      </a>
       <a href="#">comment</a>
     </div>
   {% endfor %}

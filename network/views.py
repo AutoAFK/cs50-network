@@ -1,10 +1,11 @@
+import json
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-
+from django.contrib.auth.decorators import login_required
 from .models import User, Post
 from .forms import PostForm
 
@@ -39,6 +40,22 @@ def new_post(request):
         )
     else:
         return redirect("network:index")
+
+
+def like_post(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        post_id = data.get("post_id")
+        post = Post.objects.get(id=post_id)
+        json_response = {"status": 200}
+        if request.user in post.likes.all():
+            post.likes.remove(request.user)
+            json_response["liked"] = False
+        else:
+            post.likes.add(request.user)
+            json_response["liked"] = True
+        json_response["liked_amount"] = post.get_likes_amount()
+        return JsonResponse(json_response)
 
 
 def login_view(request):
