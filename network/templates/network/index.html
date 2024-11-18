@@ -3,7 +3,7 @@
 {% block body %}
   <h1>All Posts</h1>
   {% if user.is_authenticated %}
-    <form action="{% url 'network:posts/new' %}" method="post" id="postForm">
+    <form action="{% url 'posts:new' %}" method="post" id="postForm">
       {% csrf_token %}
       <div class="border border-gray p-4">
         <label for="post_body" class="form-label fs-3 fw-bold">New Post</label>
