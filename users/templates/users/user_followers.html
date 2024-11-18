@@ -1,7 +1,14 @@
 {% extends 'network/layout.html' %}
 
 {% block body %}
-  <h1>{{ user.username }} Followers</h1>
+  {% if request.user != user %}
+    <div>
+      <h1>{{ user.username }} Followers</h1>
+      <button>Follow</button>
+    </div>
+  {% else %}
+    <h1>Followers</h1>
+  {% endif %}
   <ul>
     {% for follower in followers %}
       <li>
