@@ -1,4 +1,10 @@
 {% extends 'network/layout.html' %}
+{% load static %}
+
+{% block scripts %}
+  <script src="{% static 'network/new_post.js' %}"></script>
+  <script src="{% static 'network/like_post.js' %}"></script>
+{% endblock %}
 
 {% block body %}
   <h1>All Posts</h1>
