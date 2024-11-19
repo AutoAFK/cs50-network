@@ -1,10 +1,16 @@
 {% extends 'network/layout.html' %}
+{% load static %}
+
+{% block scripts %}
+  <script src="{% static 'users/follow.js' %}"></script>
+{% endblock %}
 
 {% block body %}
   <div class="d-flex flex-column align-items-center text-center">
     {% if request.user != user %}
       <h1>{{ user.username }}</h1>
-      <button class="btn btn-primary">Follow</button>
+      {% csrf_token %}
+      <button id="follow-btn" data-user-id="{{ user.id }}" class="btn btn-primary">Follow</button>
     {% else %}
       <h1>{{ user.username }}</h1>
     {% endif %}

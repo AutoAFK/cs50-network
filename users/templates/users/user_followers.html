@@ -1,19 +1,9 @@
-{% extends 'network/layout.html' %}
+{% extends 'users/layout.html' %}
 
-{% block body %}
-  {% if request.user != user %}
-    <div>
-      <h1>{{ user.username }} Followers</h1>
-      <button>Follow</button>
-    </div>
-  {% else %}
-    <h1>Followers</h1>
-  {% endif %}
+{% block page %}
   <ul>
     {% for follower in followers %}
-      <li>
-        <a href="{% url 'user:user_page' follower.id %}">{{ follower.username }}</a>
-      </li>
+      <li>{{ follower }}</li>
     {% endfor %}
   </ul>
 {% endblock %}
